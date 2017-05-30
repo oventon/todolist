@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>简单的web留言本工具</title>
+<style type="text/css">
+body{
+text-align:center;
+}
+</style>
+</head>
+
+
+<body>
+<h1>简单的web留言本</h1>
+<textarea id="demo" cols="50" rows="15"></textarea><br />
+<input type="button" value="追加" onClick="savestorage()" />
+<input type="button" value="初始化" onClick="clearstorage()" />
+<p id="img"></p>
+<script>
+function savestorage()
+{
+var txt_message=document.getElementById("demo").value;
+var time=new Date().getTime();   /*获取时间*/
+localStorage.setItem(time,txt_message);   /*把时间作为键名*/
+alert("数据已经成功保存!");
+loadstorage("img");
+}
+function loadstorage(id)
+{
+var result="<table border='1'>";
+for(var i=0;i<localStorage.length;i++)
+{
+var key=localStorage.key(i);    /*得到数据的索引号*/
+var value=localStorage.getItem(key);  /*获取数据*/
+var date=new Date();
+date.setTime(key);  /*将之前获取的时间以毫秒设置，在1970/1/1基础上添加毫秒*/
+var datestr=date.toGMTString();   /*将时间对象转换为字符串*/
+result+="<tr><td>"+value+"</td><td>"+datestr+"</td></tr>";
+}
+result+="</table>";
+var target=document.getElementById(id);
+target.innerHTML=result;
+}
+
+
+function clearstorage()
+{
+localStorage.clear();
+alert("全部数据被清除!");
+loadstorage("img");
+}
+</script>
+</body>
+</html>
